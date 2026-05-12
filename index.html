@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colinas del Portal - Reportes</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e74c3c">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; margin: 0; padding: 15px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #d32f2f; text-align: center; font-size: 1.6rem; margin-bottom: 5px; }
+        h2 { text-align: center; color: #555; font-size: 0.9rem; margin-top: 0; }
+        .btn-cuadrante { background: #2980b9; color: white; text-decoration: none; display: block; text-align: center; padding: 12px; border-radius: 8px; margin: 15px 0; font-weight: bold; }
+        label { display: block; margin-top: 15px; font-weight: 600; color: #333; }
+        input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+        button { background: #27ae60; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 1.1rem; cursor: pointer; margin-top: 20px; font-weight: bold; }
+        .footer-brand { text-align: center; margin-top: 40px; padding: 20px; border-top: 1px dashed #ccc; font-size: 0.85rem; color: #666; }
+        #preview { width: 100%; border-radius: 8px; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Colinas del Portal</h1>
+    <h2>Comunidad Segura y Unida</h2>
+    
+    <a href="https://github.com/haroldco45/cuadrantescaucasia" target="_blank" class="btn-cuadrante">📞 Ver Cuadrantes Caucasia</a>
+
+    <form id="appForm">
+        <label>¿Qué deseas reportar?</label>
+        <select id="tipo" required>
+            <option value="Inseguridad">⚠️ Inseguridad / Robo</option>
+            <option value="Pelea">👊 Riña / Pelea</option>
+            <option value="Mascota">🐾 Mascota Perdida</option>
+            <option value="Vivienda">🏠 Apartamento / Arriendo</option>
+            <option value="Queja">📢 Queja General</option>
+        </select>
+
+        <label>Descripción del suceso:</label>
+        <textarea id="descripcion" rows="4" placeholder="Escribe los detalles aquí..." required></textarea>
+
+        <label>Capturar Evidencia (Foto):</label>
+        <input type="file" id="foto" accept="image/*" capture="environment">
+        <img id="preview" src="#" alt="Vista previa">
+
+        <input type="hidden" id="coords">
+        
+        <button type="submit">Enviar a la Comunidad</button>
+    </form>
+</div>
+
+<div class="footer-brand">
+    <p>Hecha por <strong>VIBRAS POSITIVAS HM</strong></p>
+    <p>Derechos de Autor Reservados © 2026[cite: 2]</p>
+</div>
+
+<script>
+    // Registro del Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js');
+        });
+    }
+
+    // Geolocalización Obligatoria
+    window.onload = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                document.getElementById('coords').value = `${pos.coords.latitude},${pos.coords.longitude}`;
+            });
+        }
+    };
+
+    // Previsualización de imagen
+    document.getElementById('foto').onchange = function (evt) {
+        const [file] = this.files;
+        if (file) {
+            const preview = document.getElementById('preview');
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        }
+    };
+
+    // Manejo del Formulario
+    document.getElementById('appForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const reporte = {
+            barrio: "Colinas del Portal",
+            tipo: document.getElementById('tipo').value,
+            desc: document.getElementById('descripcion').value,
+            gps: document.getElementById('coords').value || "No disponible",
+            fecha: new Date().toLocaleString()
+        };
+
+        // Guardar en LocalStorage
+        let historial = JSON.parse(localStorage.getItem('reportes_colinas')) || [];
+        historial.push(reporte);
+        localStorage.setItem('reportes_colinas', JSON.stringify(historial));
+
+        // Enviar por WhatsApp
+        const tel = "573104131557"; 
+        const texto = `*REPORTE COLINAS DEL PORTAL*%0A` +
+                      `*Tipo:* ${reporte.tipo}%0A` +
+                      `*Detalle:* ${reporte.desc}%0A` +
+                      `*Ubicación:* https://www.google.com/maps?q=${reporte.gps}%0A` +
+                      `*Fecha:* ${reporte.fecha}`;
+        
+        window.open(`https://wa.me/${tel}?text=${texto}`, '_blank');
+        this.reset();
+        document.getElementById('preview').style.display = 'none';
+        alert('Reporte procesado exitosamente.');
+    });
+</script>
+
+</body>
+</html>
