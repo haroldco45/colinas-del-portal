@@ -3,114 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colinas del Portal - Reportes</title>
+    <title>Colinas del Portal - Convivencia</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#e74c3c">
+    <meta name="theme-color" content="#d32f2f">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; margin: 0; padding: 15px; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #d32f2f; text-align: center; font-size: 1.6rem; margin-bottom: 5px; }
-        h2 { text-align: center; color: #555; font-size: 0.9rem; margin-top: 0; }
-        .btn-cuadrante { background: #2980b9; color: white; text-decoration: none; display: block; text-align: center; padding: 12px; border-radius: 8px; margin: 15px 0; font-weight: bold; }
-        label { display: block; margin-top: 15px; font-weight: 600; color: #333; }
-        input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
-        button { background: #27ae60; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 1.1rem; cursor: pointer; margin-top: 20px; font-weight: bold; }
-        .footer-brand { text-align: center; margin-top: 40px; padding: 20px; border-top: 1px dashed #ccc; font-size: 0.85rem; color: #666; }
-        #preview { width: 100%; border-radius: 8px; margin-top: 10px; display: none; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #eceff1; margin: 0; padding: 15px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h1 { color: #b71c1c; text-align: center; margin-bottom: 5px; font-size: 1.7rem; }
+        .subtitle { text-align: center; color: #607d8b; margin-bottom: 20px; font-size: 0.9rem; }
+        .btn-call { background: #1565c0; color: white; text-decoration: none; display: block; text-align: center; padding: 15px; border-radius: 12px; margin-bottom: 25px; font-weight: bold; border: 2px solid #0d47a1; }
+        label { display: block; margin-top: 15px; font-weight: bold; color: #37474f; }
+        select, textarea, input[type="file"] { width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #cfd8dc; border-radius: 10px; box-sizing: border-box; background: #fafafa; }
+        button { background: #2e7d32; color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-size: 1.1rem; cursor: pointer; margin-top: 25px; font-weight: bold; transition: 0.3s; }
+        button:active { transform: scale(0.98); background: #1b5e20; }
+        #preview { width: 100%; border-radius: 10px; margin-top: 15px; display: none; border: 1px solid #ddd; }
+        footer { text-align: center; margin-top: 40px; padding: 20px; font-size: 0.8rem; color: #78909c; line-height: 1.5; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Colinas del Portal</h1>
-    <h2>Comunidad Segura y Unida</h2>
+    <p class="subtitle">Reportes de Seguridad y Convivencia</p>
     
-    <a href="https://github.com/haroldco45/cuadrantescaucasia" target="_blank" class="btn-cuadrante">📞 Ver Cuadrantes Caucasia</a>
+    <!-- Enlace directo a la página de llamadas -->
+    <a href="https://haroldco45.github.io/cuadrantescaucasia/" target="_blank" class="btn-call">📞 VER CUADRANTES Y LLAMAR</a>
 
-    <form id="appForm">
-        <label>¿Qué deseas reportar?</label>
+    <form id="reporteForm">
+        <label>Asunto del reporte:</label>
         <select id="tipo" required>
-            <option value="Inseguridad">⚠️ Inseguridad / Robo</option>
-            <option value="Pelea">👊 Riña / Pelea</option>
-            <option value="Mascota">🐾 Mascota Perdida</option>
-            <option value="Vivienda">🏠 Apartamento / Arriendo</option>
-            <option value="Queja">📢 Queja General</option>
+            <option value="Inseguridad">🚨 Inseguridad / Sospechosos</option>
+            <option value="Riña">🔊 Pelea / Ruido Excesivo</option>
+            <option value="Mascota">🐶 Mascota Perdida</option>
+            <option value="Vivienda">🔑 Busco/Arriendo Apartamento</option>
+            <option value="Comunitaria">📋 Queja o Sugerencia</option>
         </select>
 
-        <label>Descripción del suceso:</label>
-        <textarea id="descripcion" rows="4" placeholder="Escribe los detalles aquí..." required></textarea>
+        <label>Detalles:</label>
+        <textarea id="descripcion" rows="4" placeholder="¿Qué está pasando?" required></textarea>
 
-        <label>Capturar Evidencia (Foto):</label>
+        <label>Evidencia Visual (Foto):</label>
         <input type="file" id="foto" accept="image/*" capture="environment">
-        <img id="preview" src="#" alt="Vista previa">
+        <img id="preview" src="#" alt="Vista previa de evidencia">
 
         <input type="hidden" id="coords">
         
-        <button type="submit">Enviar a la Comunidad</button>
+        <button type="submit">PUBLICAR REPORTE</button>
     </form>
 </div>
 
-<div class="footer-brand">
-    <p>Hecha por <strong>VIBRAS POSITIVAS HM</strong></p>
-    <p>Derechos de Autor Reservados © 2026[cite: 2]</p>
-</div>
+<footer>
+    Hecha por <strong>VIBRAS POSITIVAS HM</strong><br>
+    Derechos de Autor Reservados © 2026
+</footer>
 
 <script>
-    // Registro del Service Worker
+    // Registro Service Worker para PWA
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js');
         });
     }
 
-    // Geolocalización Obligatoria
+    // Captura de Coordenadas (GPS)
     window.onload = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(pos => {
                 document.getElementById('coords').value = `${pos.coords.latitude},${pos.coords.longitude}`;
-            });
+            }, () => { console.log("GPS no activado"); });
         }
     };
 
-    // Previsualización de imagen
-    document.getElementById('foto').onchange = function (evt) {
-        const [file] = this.files;
+    // Previsualización de Foto
+    document.getElementById('foto').onchange = function (e) {
+        const file = e.target.files[0];
         if (file) {
-            const preview = document.getElementById('preview');
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = document.getElementById('preview');
+                img.src = event.target.result;
+                img.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
         }
     };
 
-    // Manejo del Formulario
-    document.getElementById('appForm').addEventListener('submit', function(e) {
+    // Almacenamiento y WhatsApp
+    document.getElementById('reporteForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        const reporte = {
-            barrio: "Colinas del Portal",
+        const data = {
             tipo: document.getElementById('tipo').value,
-            desc: document.getElementById('descripcion').value,
-            gps: document.getElementById('coords').value || "No disponible",
-            fecha: new Date().toLocaleString()
+            detalle: document.getElementById('descripcion').value,
+            gps: document.getElementById('coords').value || "Ubicación no compartida",
+            hora: new Date().toLocaleString()
         };
 
-        // Guardar en LocalStorage
-        let historial = JSON.parse(localStorage.getItem('reportes_colinas')) || [];
-        historial.push(reporte);
-        localStorage.setItem('reportes_colinas', JSON.stringify(historial));
+        // Guardar localmente
+        let localData = JSON.parse(localStorage.getItem('colinas_data')) || [];
+        localData.push(data);
+        localStorage.setItem('colinas_data', JSON.stringify(localData));
 
-        // Enviar por WhatsApp
-        const tel = "573104131557"; 
-        const texto = `*REPORTE COLINAS DEL PORTAL*%0A` +
-                      `*Tipo:* ${reporte.tipo}%0A` +
-                      `*Detalle:* ${reporte.desc}%0A` +
-                      `*Ubicación:* https://www.google.com/maps?q=${reporte.gps}%0A` +
-                      `*Fecha:* ${reporte.fecha}`;
+        // WhatsApp a tu número registrado
+        const mensaje = `*COLINAS DEL PORTAL*%0A` +
+                        `*Reporte:* ${data.tipo}%0A` +
+                        `*Detalle:* ${data.detalle}%0A` +
+                        `*GPS:* https://www.google.com/maps?q=${data.gps}%0A` +
+                        `*Hora:* ${data.hora}`;
         
-        window.open(`https://wa.me/${tel}?text=${texto}`, '_blank');
+        window.open(`https://wa.me/573104131557?text=${mensaje}`, '_blank');
         this.reset();
         document.getElementById('preview').style.display = 'none';
-        alert('Reporte procesado exitosamente.');
+        alert('Reporte enviado con éxito.');
     });
 </script>
 
