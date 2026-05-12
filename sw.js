@@ -1,10 +1,10 @@
-const CACHE_NAME = 'colinas-manual-v1';
-const ASSETS = ['index.html', 'manifest.json'];
+const CACHE_NAME = 'colinas-v4';
+const FILES = ['index.html', 'manifest.json'];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
+  e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES)));
 });
 
 self.addEventListener('fetch', (e) => {
-  e.respondWith(caches.match(e.request).then((r) => r || fetch(e.request)));
+  e.respondWith(caches.match(e.request).then((res) => res || fetch(e.request)));
 });
