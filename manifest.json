@@ -1,9 +1,9 @@
 {
-  "name": "Colinas del Portal",
-  "short_name": "ColinasP",
+  "name": "Colinas del Portal PWA",
+  "short_name": "ColinasPortal",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#eceff1",
+  "background_color": "#ffffff",
   "theme_color": "#d32f2f",
   "icons": [
     {
@@ -12,7 +12,7 @@
       "type": "image/png"
     },
     {
-      "src": "https://via.placeholder.com/512/d32f2f/ffffff?text=Colinas+Portal",
+      "src": "https://via.placeholder.com/512/d32f2f/ffffff?text=Colinas",
       "sizes": "512x512",
       "type": "image/png"
     }
