@@ -12,10 +12,15 @@
         h1 { color: #b71c1c; text-align: center; margin-bottom: 5px; font-size: 1.7rem; }
         .subtitle { text-align: center; color: #607d8b; margin-bottom: 20px; font-size: 0.9rem; }
         .btn-call { background: #1565c0; color: white; text-decoration: none; display: block; text-align: center; padding: 15px; border-radius: 12px; margin-bottom: 25px; font-weight: bold; border: 2px solid #0d47a1; }
+        
         label { display: block; margin-top: 15px; font-weight: bold; color: #37474f; }
-        select, textarea, input[type="file"] { width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #cfd8dc; border-radius: 10px; box-sizing: border-box; background: #fafafa; }
+        select, textarea, input { width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #cfd8dc; border-radius: 10px; box-sizing: border-box; background: #fafafa; font-size: 1rem; }
+        
+        .nota-informativa { background-color: #fff9c4; padding: 12px; border-radius: 10px; border-left: 5px solid #fbc02d; font-size: 0.85rem; color: #574b00; margin: 15px 0; line-height: 1.4; }
+        
         button { background: #2e7d32; color: white; border: none; padding: 18px; width: 100%; border-radius: 12px; font-size: 1.1rem; cursor: pointer; margin-top: 25px; font-weight: bold; transition: 0.3s; }
         button:active { transform: scale(0.98); background: #1b5e20; }
+        
         #preview { width: 100%; border-radius: 10px; margin-top: 15px; display: none; border: 1px solid #ddd; }
         footer { text-align: center; margin-top: 40px; padding: 20px; font-size: 0.8rem; color: #78909c; line-height: 1.5; }
     </style>
@@ -24,13 +29,19 @@
 
 <div class="container">
     <h1>Colinas del Portal</h1>
-    <p class="subtitle">Reportes de Seguridad y Convivencia</p>
+    <p class="subtitle">Gestión Comunitaria</p>
     
-    <!-- Enlace directo a la página de llamadas -->
     <a href="https://haroldco45.github.io/cuadrantescaucasia/" target="_blank" class="btn-call">📞 VER CUADRANTES Y LLAMAR</a>
 
+    <div class="nota-informativa">
+        <strong>Aviso Importante:</strong> El barrio no cuenta con un celular comunitario oficial. Debe ingresar manualmente el número de WhatsApp del contacto o grupo donde desea remitir este reporte.
+    </div>
+
     <form id="reporteForm">
-        <label>Asunto del reporte:</label>
+        <label>WhatsApp Destino (Ej: 3101234567):</label>
+        <input type="tel" id="whatsapp_destino" placeholder="Número de alguien del barrio" required>
+
+        <label>Tipo de reporte:</label>
         <select id="tipo" required>
             <option value="Inseguridad">🚨 Inseguridad / Sospechosos</option>
             <option value="Riña">🔊 Pelea / Ruido Excesivo</option>
@@ -39,16 +50,16 @@
             <option value="Comunitaria">📋 Queja o Sugerencia</option>
         </select>
 
-        <label>Detalles:</label>
-        <textarea id="descripcion" rows="4" placeholder="¿Qué está pasando?" required></textarea>
+        <label>Detalles del suceso:</label>
+        <textarea id="descripcion" rows="4" placeholder="Describa la situación..." required></textarea>
 
         <label>Evidencia Visual (Foto):</label>
         <input type="file" id="foto" accept="image/*" capture="environment">
-        <img id="preview" src="#" alt="Vista previa de evidencia">
+        <img id="preview" src="#" alt="Vista previa">
 
         <input type="hidden" id="coords">
         
-        <button type="submit">PUBLICAR REPORTE</button>
+        <button type="submit">PUBLICAR Y ENVIAR REPORTE</button>
     </form>
 </div>
 
@@ -58,19 +69,19 @@
 </footer>
 
 <script>
-    // Registro Service Worker para PWA
+    // Registro Service Worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js');
         });
     }
 
-    // Captura de Coordenadas (GPS)
+    // GPS Obligatorio
     window.onload = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(pos => {
                 document.getElementById('coords').value = `${pos.coords.latitude},${pos.coords.longitude}`;
-            }, () => { console.log("GPS no activado"); });
+            });
         }
     };
 
@@ -88,33 +99,36 @@
         }
     };
 
-    // Almacenamiento y WhatsApp
+    // Manejo de envío
     document.getElementById('reporteForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        const data = {
-            tipo: document.getElementById('tipo').value,
-            detalle: document.getElementById('descripcion').value,
-            gps: document.getElementById('coords').value || "Ubicación no compartida",
-            hora: new Date().toLocaleString()
-        };
+        const destino = document.getElementById('whatsapp_destino').value;
+        const tipo = document.getElementById('tipo').value;
+        const detalle = document.getElementById('descripcion').value;
+        const gps = document.getElementById('coords').value || "No compartida";
+        const fecha = new Date().toLocaleString();
 
-        // Guardar localmente
-        let localData = JSON.parse(localStorage.getItem('colinas_data')) || [];
-        localData.push(data);
-        localStorage.setItem('colinas_data', JSON.stringify(localData));
+        // Guardar localmente (Historial del usuario)
+        let historial = JSON.parse(localStorage.getItem('reportes_portal')) || [];
+        historial.push({tipo, detalle, fecha});
+        localStorage.setItem('reportes_portal', JSON.stringify(historial));
 
-        // WhatsApp a tu número registrado
-        const mensaje = `*COLINAS DEL PORTAL*%0A` +
-                        `*Reporte:* ${data.tipo}%0A` +
-                        `*Detalle:* ${data.detalle}%0A` +
-                        `*GPS:* https://www.google.com/maps?q=${data.gps}%0A` +
-                        `*Hora:* ${data.hora}`;
+        // Construir mensaje
+        const mensaje = `*REPORTE COLINAS DEL PORTAL*%0A%0A` +
+                        `*De:* Un vecino de Colinas%0A` +
+                        `*Asunto:* ${tipo}%0A` +
+                        `*Detalle:* ${detalle}%0A` +
+                        `*Ubicación:* http://maps.google.com/?q=${gps}%0A` +
+                        `*Fecha:* ${fecha}%0A%0A` +
+                        `_Enviado desde la App PWA Colinas_`;
         
-        window.open(`https://wa.me/573104131557?text=${mensaje}`, '_blank');
+        // Enviar al número manual ingresado
+        window.open(`https://wa.me/57${destino}?text=${mensaje}`, '_blank');
+        
         this.reset();
         document.getElementById('preview').style.display = 'none';
-        alert('Reporte enviado con éxito.');
+        alert('Se abrirá WhatsApp para completar el envío al número indicado.');
     });
 </script>
 
