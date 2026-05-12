@@ -1,4 +1,4 @@
-const CACHE_NAME = 'colinas-portal-v2';
+const CACHE_NAME = 'colinas-manual-v1';
 const ASSETS = ['index.html', 'manifest.json'];
 
 self.addEventListener('install', (e) => {
